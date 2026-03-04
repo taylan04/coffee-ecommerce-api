@@ -1,6 +1,8 @@
 package com.example.demo.DTO;
 
 import com.example.demo.Model.Usuario;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public record UsuarioDTO(
@@ -9,6 +11,7 @@ public record UsuarioDTO(
         String nome,
         String sobrenome,
         String telefone,
+        LocalDate aniversario,
         List<EnderecoDTO> enderecos
 ) {
     public UsuarioDTO(Usuario usuario) {
@@ -17,6 +20,7 @@ public record UsuarioDTO(
                 usuario.getNome(),
                 usuario.getSobrenome(),
                 usuario.getTelefone(),
+                usuario.getAniversario(),
                 usuario.getEnderecos()
                         .stream() // percorre a lista
                         .map(EnderecoDTO::new) // transforma cada item

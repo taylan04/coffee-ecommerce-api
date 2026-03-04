@@ -1,5 +1,8 @@
 package com.example.demo.Controller;
 
+import com.example.demo.DTO.EnderecoCreateDTO;
+import com.example.demo.DTO.EnderecoDTO;
+import com.example.demo.DTO.EnderecoUpdateDTO;
 import com.example.demo.Model.Credencial;
 import com.example.demo.Model.Endereco;
 import com.example.demo.Service.EnderecoService;
@@ -19,26 +22,23 @@ public class EnderecoController {
     }
 
     @GetMapping("/{id}")
-    public Endereco findById(@PathVariable Long id) {
+    public EnderecoDTO findById(@PathVariable Long id) {
         return enderecoService.findById(id);
     }
 
     @GetMapping
-    public List<Endereco> findAll() {
+    public List<EnderecoDTO> findAll() {
         return enderecoService.findAll();
     }
 
     @PostMapping
-    public Endereco create(@RequestBody Endereco endereco) {
+    public EnderecoDTO create(@RequestBody EnderecoCreateDTO endereco) {
         return enderecoService.save(endereco);
     }
 
-    @PutMapping("/{id}")
-    public Endereco update( @PathVariable Long id, @RequestBody Endereco endereco) { return enderecoService.update(id, endereco);}
-
     @PatchMapping("/{id}")
-    public Endereco updatePartial(@PathVariable Long id, @RequestBody Endereco endereco) {
-        return enderecoService.updatePartial(id, endereco);
+    public EnderecoDTO update(@PathVariable Long id, @RequestBody EnderecoUpdateDTO endereco) {
+        return enderecoService.update(id, endereco);
     }
 
     //implementar autenticação de delete

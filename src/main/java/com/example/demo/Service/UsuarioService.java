@@ -13,6 +13,5 @@ public interface UsuarioService {
     UsuarioDTO save(UsuarioCreateDTO dto);
     List<UsuarioDTO> findAll();
     UsuarioDTO update(Long id, UsuarioUpdateDTO dto);
-    UsuarioDTO updatePartial(Long id, UsuarioDTO dto);
     public void delete(Long id);
 }

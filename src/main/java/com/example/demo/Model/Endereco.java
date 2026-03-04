@@ -1,5 +1,6 @@
 package com.example.demo.Model;
 
+import com.example.demo.DTO.EnderecoCreateDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigInteger;
@@ -37,4 +38,17 @@ public class Endereco {
     private String estado;
     @Column(name = "pais", nullable = false , length = 50)
     private String pais;
+
+    public Endereco(EnderecoCreateDTO dto, Usuario usuario) {
+        this.usuario = usuario;
+        this.logradouro = dto.logradouro();
+        this.numero = dto.numero();
+        this.complemento = dto.complemento();
+        this.referencia = dto.referencia();
+        this.bairro = dto.bairro();
+        this.cep = dto.cep();
+        this.cidade = dto.cidade();
+        this.estado = dto.estado();
+        this.pais = dto.pais();
+    }
 }

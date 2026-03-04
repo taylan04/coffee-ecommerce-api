@@ -1,16 +1,16 @@
 package com.example.demo.Service;
 
-import com.example.demo.DTO.LoginRespostaDTO;
+import com.example.demo.DTO.*;
 import com.example.demo.Model.Credencial;
 
 import java.util.List;
 
 public interface CredencialService {
-    public Credencial findById(Long id);
-    public List<Credencial> findAll();
-    public Credencial save(Credencial credencial);
-    public Credencial update(Long id, Credencial credencial);
-    public Credencial updateSenha(Long id, Credencial credencial);
+    //todos retornam CredencialDTO porque é o dto de resposta
+    public CredencialDTO findById(Long id);
+    public List<CredencialDTO> findAll();
+    public CredencialDTO save(CredencialCreateDTO credencial);
+    public CredencialDTO update(Long id, CredencialUpdateDTO credencial);
     public LoginRespostaDTO verificarAutenticidade(Credencial credencial);
     public void delete(Long id);
 }

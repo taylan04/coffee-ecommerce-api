@@ -1,6 +1,8 @@
 package com.example.demo.Service.Implement;
 
+import com.example.demo.DTO.CredencialCreateDTO;
 import com.example.demo.DTO.CredencialDTO;
+import com.example.demo.DTO.CredencialUpdateDTO;
 import com.example.demo.DTO.LoginRespostaDTO;
 import com.example.demo.Model.Credencial;
 import com.example.demo.Repository.CredencialRepository;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,41 +37,53 @@ public class CredencialServiceImpl implements CredencialService {
     // que só carrega dados ao acessar seus atributos). findById é mais seguro.
 
     @Override
-    public Credencial findById(Long id) {
-        return credencialRepository.findById(id)
+    public CredencialDTO findById(Long id) {
+        Credencial credencial = credencialRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Credencial não encontrada."));
         //.orElseThrow() faz com que o método retorno um objeto invés de um Optional
+
+        return new CredencialDTO(credencial);
     }
 
     @Override
-    public List<Credencial> findAll() {
-        return credencialRepository.findAll();
+    public List<CredencialDTO> findAll() {
+        List<Credencial> credenciais = credencialRepository.findAll();
+        //obs: usei forEach primeiro mas esqueci que forEach não retorna nada, então nao posso usar aqui
+        List<CredencialDTO> credenciaisDTOS = new ArrayList<>();
+        for (Credencial credencial : credenciais ) {
+            credenciaisDTOS.add(new CredencialDTO(credencial));
+        }
+
+        return credenciaisDTOS;
     }
 
+    //o service recebe em DTO e converte pra entidade, mas retorna em DTO novamente
     @Override
-    public Credencial save(Credencial credencial) {
-        String senhaCriptografada = passwordEncoder.encode(credencial.getSenha());
+    public CredencialDTO save(CredencialCreateDTO dto) {
+        Credencial credencial = new Credencial();
+        credencial.setEmail(dto.email());
+        String senhaCriptografada = passwordEncoder.encode(dto.senha());
         credencial.setSenha(senhaCriptografada);
-        return credencialRepository.save(credencial);
-    }
-
-    //implementar metodo de update
-    @Override
-    public Credencial update(Long id, Credencial credencial) {
-        return null;
+        credencialRepository.save(credencial);
+        return new CredencialDTO(credencial);
     }
 
     @Override
-    public Credencial updateSenha(Long id, Credencial nova) {
+    public CredencialDTO update(Long id, CredencialUpdateDTO dto) {
         Credencial existente = credencialRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Credencial não encontrada."));
 
-        if (nova.getSenha() != null) {
-            existente.setSenha(nova.getSenha());
+        if (dto.senha() != null) {
+            existente.setSenha(dto.senha());
+        }
+
+        if (dto.email() != null ) {
+            existente.setEmail(dto.email());
         }
 
         //melhor retornar o objeto ou null?
-        return credencialRepository.save(existente);
+        //Respondido: em padrão de mercado, não se deve retornar null. ( má prática )
+        return new CredencialDTO(credencialRepository.save(existente));
     }
 
     @Override

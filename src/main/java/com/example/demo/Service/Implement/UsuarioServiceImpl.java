@@ -9,6 +9,7 @@ import com.example.demo.Service.UsuarioService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,10 +31,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public List<UsuarioDTO> findAll() {
-        return usuarioRepository.findAll().stream().map(UsuarioDTO::new).toList();
-        //stream() “quero trabalhar item por item”
-        //map() “para cada item, transforme em outra coisa”
-        //toList() “me devolva tudo como uma nova lista”
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        List <UsuarioDTO> usuariosDTOS = new ArrayList<>();
+        for (Usuario usuario : usuarios) {
+            usuariosDTOS.add(new UsuarioDTO(usuario));
+        }
+
+        return usuariosDTOS;
     }
 
     @Override
@@ -44,29 +49,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setSobrenome(dto.sobrenome());
         usuario.setTelefone(dto.telefone());
 
-        Usuario salvo = usuarioRepository.save(usuario);
-
-        return new UsuarioDTO(salvo);
+        return new UsuarioDTO(usuarioRepository.save(usuario));
     }
 
-    //implementar metodo de update
     @Override
     public UsuarioDTO update(Long id, UsuarioUpdateDTO dto) {
-
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        usuario.setNome(dto.nome());
-        usuario.setSobrenome(dto.sobrenome());
-        usuario.setTelefone(dto.telefone());
-
-        Usuario atualizado = usuarioRepository.save(usuario);
-
-        return new UsuarioDTO(atualizado);
-    }
-
-    @Override
-    public UsuarioDTO updatePartial(Long id, UsuarioDTO dto) {
 
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -83,9 +70,13 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuario.setTelefone(dto.telefone());
         }
 
-        Usuario atualizado = usuarioRepository.save(usuario);
+        if (dto.aniversario() != null) {
+            usuario.setAniversario(dto.aniversario());
+        }
 
-        return new UsuarioDTO(atualizado);
+
+        //já salva e retorna aqui mesmo oxe ta achando oq
+        return new UsuarioDTO(usuarioRepository.save(usuario));
     }
 
     @Override

@@ -38,11 +38,6 @@ public class UsuarioController {
         return usuarioService.update(id, dto);
     }
 
-    @PatchMapping("/{id}")
-    public UsuarioDTO updatePartial(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
-        return usuarioService.updatePartial(id, usuarioDTO);
-    }
-
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         usuarioService.delete(id);

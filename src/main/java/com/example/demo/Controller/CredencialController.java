@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.DTO.CredencialDTO;
 import com.example.demo.Model.Credencial;
 import com.example.demo.Service.CredencialService;
 import org.springframework.web.bind.annotation.*;
@@ -20,25 +21,25 @@ public class CredencialController {
     }
 
     @GetMapping("/{id}")
-    public Credencial findById(@PathVariable Long id) {
+    public CredencialDTO findById(@PathVariable Long id) {
         return credencialService.findById(id);
     }
 
     @GetMapping
-    public List<Credencial> findAll() {
+    public List<CredencialDTO> findAll() {
         return credencialService.findAll();
     }
 
     @PostMapping
-    public Credencial create(@RequestBody Credencial credencial) {
+    public CredencialDTO create(@RequestBody Credencial credencial) {
         return credencialService.save(credencial);
     }
 
     @PutMapping("/{id}")
-    public Credencial update(@PathVariable Long id, @RequestBody Credencial credencial) { return credencialService.update(id, credencial);}
+    public CredencialDTO update(@PathVariable Long id, @RequestBody Credencial credencial) { return credencialService.update(id, credencial);}
 
     @PatchMapping("/{id}")
-    public Credencial updateSenha(@PathVariable Long id, @RequestBody Credencial credencial) {
+    public CredencialDTO updateSenha(@PathVariable Long id, @RequestBody Credencial credencial) {
         return credencialService.updateSenha(id, credencial);
     }
 

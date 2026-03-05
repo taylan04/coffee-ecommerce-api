@@ -2,6 +2,7 @@ package com.example.demo.Service.Implement;
 
 import com.example.demo.DTO.ProdutoCreateDTO;
 import com.example.demo.DTO.ProdutoDTO;
+import com.example.demo.DTO.ProdutoUpdateDTO;
 import com.example.demo.Model.Produto;
 import com.example.demo.Repository.ProdutoRepository;
 import com.example.demo.Service.ProdutoService;
@@ -46,42 +47,37 @@ public class ProdutoServiceImpl implements ProdutoService {
         return new ProdutoDTO(produto);
     }
 
-    //implementar metodo de update
     @Override
-    public Produto update(Long id, Produto produto) {
-        return null;
-    }
+    public ProdutoDTO update(Long id, ProdutoUpdateDTO novo) {
 
-    @Override
-    public Produto updatePartial(Long id, Produto novo) {
         Produto existente = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
 
-        if (novo.getTitulo() != null) {
-            existente.setTitulo(novo.getTitulo());
+        if (novo.titulo() != null) {
+            existente.setTitulo(novo.titulo());
         }
 
-        if (novo.getDescricao() != null) {
-            existente.setDescricao(novo.getDescricao());
+        if (novo.descricao() != null) {
+            existente.setDescricao(novo.descricao());
         }
 
-        if (novo.getQuantidade() != null) {
-            existente.setQuantidade(novo.getQuantidade());
+        if (novo.quantidade() != null) {
+            existente.setQuantidade(novo.quantidade());
         }
 
-        if (novo.getImagemUrl() != null) {
-            existente.setImagemUrl(novo.getImagemUrl());
+        if (novo.imagemUrl() != null) {
+            existente.setImagemUrl(novo.imagemUrl());
         }
 
-        if (novo.getTipo() != null) {
-            existente.setTipo(novo.getTipo());
+        if (novo.tipo() != null) {
+            existente.setTipo(novo.tipo());
         }
 
-        if (novo.getPreco() != null) {
-            existente.setPreco(novo.getPreco());
+        if (novo.preco() != null) {
+            existente.setPreco(novo.preco());
         }
 
-        return produtoRepository.save(existente);
+        return new ProdutoDTO(produtoRepository.save(existente));
     }
 
     @Override

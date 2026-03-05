@@ -1,5 +1,8 @@
 package com.example.demo.Controller;
 
+import com.example.demo.DTO.ProdutoCreateDTO;
+import com.example.demo.DTO.ProdutoDTO;
+import com.example.demo.DTO.ProdutoUpdateDTO;
 import com.example.demo.Model.Produto;
 import com.example.demo.Service.ProdutoService;
 import org.springframework.http.ResponseEntity;
@@ -20,26 +23,23 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public Produto findById(@PathVariable Long id) {
+    public ProdutoDTO findById(@PathVariable Long id) {
         return produtoService.findById(id);
     }
 
     @GetMapping
-    public List<Produto> findAll() {
+    public List<ProdutoDTO> findAll() {
         return produtoService.findAll();
     }
 
     @PostMapping
-    public Produto create(@RequestBody Produto produto) {
+    public ProdutoDTO create(@RequestBody ProdutoCreateDTO produto) {
         return produtoService.save(produto);
     }
 
-    @PutMapping("/{id}")
-    public Produto update( @PathVariable Long id, @RequestBody Produto produto) { return produtoService.update(id, produto);}
-
     @PatchMapping("/{id}")
-    public Produto updatePartial(@PathVariable Long id, @RequestBody Produto produto) {
-        return produtoService.updatePartial(id, produto);
+    public ProdutoDTO update(@PathVariable Long id, @RequestBody ProdutoUpdateDTO produto) {
+        return produtoService.update(id, produto);
     }
 
     //implementar autenticação de delete

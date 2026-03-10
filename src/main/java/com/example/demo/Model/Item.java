@@ -1,5 +1,6 @@
 package com.example.demo.Model;
 
+import com.example.demo.DTO.Item.ItemCreateDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,4 +29,11 @@ public class Item {
     private Integer quantidade;
     @Column(name = "subtotal", nullable = false , precision = 10 , scale = 2)
     private BigDecimal subtotal;
+
+    public Item(ItemCreateDTO dto, Produto produto, Pedido pedido) {
+        this.produto = produto;
+        this.pedido = pedido;
+        this.quantidade = dto.quantidade();
+        this.subtotal = dto.subtotal();
+    }
 }

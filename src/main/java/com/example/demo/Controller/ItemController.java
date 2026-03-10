@@ -1,5 +1,8 @@
 package com.example.demo.Controller;
 
+import com.example.demo.DTO.Item.ItemCreateDTO;
+import com.example.demo.DTO.Item.ItemDTO;
+import com.example.demo.DTO.Item.ItemUpdateDTO;
 import com.example.demo.Model.Endereco;
 import com.example.demo.Model.Item;
 import com.example.demo.Service.ItemService;
@@ -19,26 +22,23 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public Item findById(@PathVariable Long id) {
+    public ItemDTO findById(@PathVariable Long id) {
         return itemService.findById(id);
     }
 
     @GetMapping
-    public List<Item> findAll() {
+    public List<ItemDTO> findAll() {
         return itemService.findAll();
     }
 
     @PostMapping
-    public Item create(@RequestBody Item item) {
+    public ItemDTO create(@RequestBody ItemCreateDTO item) {
         return itemService.save(item);
     }
 
-    @PutMapping("/{id}")
-    public Item update( @PathVariable Long id, @RequestBody Item item) { return itemService.update(id, item);}
-
     @PatchMapping("/{id}")
-    public Item updatePartial(@PathVariable Long id, @RequestBody Item item) {
-        return itemService.updatePartial(id, item);
+    public ItemDTO update(@PathVariable Long id, @RequestBody ItemUpdateDTO item) {
+        return itemService.update(id, item);
     }
 
     //implementar autenticação de delete

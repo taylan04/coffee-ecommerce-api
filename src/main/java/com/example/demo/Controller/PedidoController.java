@@ -1,5 +1,8 @@
 package com.example.demo.Controller;
 
+import com.example.demo.DTO.Pedido.PedidoCreateDTO;
+import com.example.demo.DTO.Pedido.PedidoDTO;
+import com.example.demo.DTO.Pedido.PedidoUpdateDTO;
 import com.example.demo.Model.Pedido;
 import com.example.demo.Service.PedidoService;
 import org.springframework.web.bind.annotation.*;
@@ -18,26 +21,23 @@ public class PedidoController {
     }
 
     @GetMapping("/{id}")
-    public Pedido findById(@PathVariable Long id) {
+    public PedidoDTO findById(@PathVariable Long id) {
         return pedidoService.findById(id);
     }
 
     @GetMapping
-    public List<Pedido> findAll() {
+    public List<PedidoDTO> findAll() {
         return pedidoService.findAll();
     }
 
     @PostMapping
-    public Pedido create(@RequestBody Pedido pedido) {
+    public PedidoDTO create(@RequestBody PedidoCreateDTO pedido) {
         return pedidoService.save(pedido);
     }
 
-    @PutMapping("/{id}")
-    public Pedido update( @PathVariable Long id, @RequestBody Pedido pedido) { return pedidoService.update(id, pedido);}
-
     @PatchMapping("/{id}")
-    public Pedido updatePartial(@PathVariable Long id, @RequestBody Pedido pedido) {
-        return pedidoService.updatePartial(id, pedido);
+    public PedidoDTO update(@PathVariable Long id, @RequestBody PedidoUpdateDTO pedido) {
+        return pedidoService.update(id, pedido);
     }
 
     //implementar autenticação de delete

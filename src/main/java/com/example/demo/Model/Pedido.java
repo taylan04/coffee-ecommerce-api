@@ -1,5 +1,7 @@
 package com.example.demo.Model;
 
+import com.example.demo.DTO.Pedido.PedidoCreateDTO;
+import com.example.demo.DTO.Pedido.PedidoDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,4 +37,14 @@ public class Pedido {
     private BigDecimal valorTotal;
     @Column(name = "valor_final", nullable = false , precision = 10 , scale = 2)
     private BigDecimal valorFinal;
+
+    public Pedido(PedidoCreateDTO dto, Cupom cupom, Usuario usuario) {
+        this.usuario = usuario;
+        this.cupom = cupom;
+        this.estado = dto.estado();
+        this.desconto = dto.desconto();
+        this.dataPedido = dto.dataPedido();
+        this.valorTotal = dto.valorTotal();
+        this.valorFinal = dto.valorFinal();
+    }
 }

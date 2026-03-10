@@ -1,66 +1,89 @@
 package com.example.demo.Service.Implement;
 
+import com.example.demo.DTO.Pedido.PedidoCreateDTO;
+import com.example.demo.DTO.Pedido.PedidoDTO;
+import com.example.demo.DTO.Pedido.PedidoUpdateDTO;
+import com.example.demo.Model.Cupom;
 import com.example.demo.Model.Pedido;
+import com.example.demo.Model.Usuario;
+import com.example.demo.Repository.CupomRepository;
 import com.example.demo.Repository.PedidoRepository;
+import com.example.demo.Repository.UsuarioRepository;
 import com.example.demo.Service.PedidoService;
+import com.example.demo.Service.UsuarioService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
 
     private final PedidoRepository pedidoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final CupomRepository cupomRepository;
 
-    public PedidoServiceImpl(PedidoRepository pedidoRepository) {
+    public PedidoServiceImpl(PedidoRepository pedidoRepository, UsuarioRepository usuarioRepository, CupomRepository cupomRepository) {
         this.pedidoRepository = pedidoRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.cupomRepository = cupomRepository;
     }
 
     @Override
-    public Pedido findById(Long id) {
-        return pedidoRepository.findById(id)
+    public PedidoDTO findById(Long id) {
+        Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado."));
+
+        return new PedidoDTO(pedido);
     }
 
     @Override
-    public List<Pedido> findAll() {
-        return pedidoRepository.findAll();
+    public List<PedidoDTO> findAll() {
+        List<Pedido> pedidos = pedidoRepository.findAll();
+        List<PedidoDTO> pedidoDTOS = new ArrayList<>();
+
+        for (Pedido pedido : pedidos) {
+            pedidoDTOS.add(new PedidoDTO(pedido));
+        }
+
+        return pedidoDTOS;
     }
 
     @Override
-    public Pedido save(Pedido pedido) {
-        return pedidoRepository.save(pedido);
+    public PedidoDTO save(PedidoCreateDTO dto) {
+        Usuario usuario = usuarioRepository.findById(dto.idUsuario())
+                .orElseThrow(() -> new RuntimeException("Usuario não encontrado!"));
+
+        Cupom cupom = cupomRepository.findById(dto.idCupom())
+                .orElseThrow(() -> new RuntimeException("Cupom não encontrado."));
+
+        Pedido pedido = new Pedido(dto, cupom, usuario);
+        return new PedidoDTO(pedidoRepository.save(pedido));
     }
 
-    //implementar metodo de update
     @Override
-    public Pedido update(Long id, Pedido pedido) {
-        return null;
-    }
-
-    @Override
-    public Pedido updatePartial(Long id, Pedido novo) {
+    public PedidoDTO update(Long id, PedidoUpdateDTO novo) {
         Pedido existente = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado."));
 
-        if (novo.getEstado() != null) {
-            existente.setEstado(novo.getEstado());
+        if (novo.estado() != null) {
+            existente.setEstado(novo.estado());
         }
 
-        if (novo.getDesconto() != null) {
-            existente.setDesconto(novo.getDesconto());
+        if (novo.desconto() != null) {
+            existente.setDesconto(novo.desconto());
         }
 
-        if (novo.getValorTotal() != null) {
-            existente.setValorTotal(novo.getValorTotal());
+        if (novo.valorTotal() != null) {
+            existente.setValorTotal(novo.valorTotal());
         }
 
-        if (novo.getValorFinal() != null) {
-            existente.setValorFinal(novo.getValorFinal());
+        if (novo.valorFinal() != null) {
+            existente.setValorFinal(novo.valorFinal());
         }
 
-        return pedidoRepository.save(existente);
+        return new PedidoDTO(pedidoRepository.save(existente));
     }
 
     @Override

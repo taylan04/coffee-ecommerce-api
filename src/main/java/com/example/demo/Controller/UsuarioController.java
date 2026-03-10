@@ -4,6 +4,7 @@ import com.example.demo.DTO.Usuario.UsuarioCreateDTO;
 import com.example.demo.DTO.Usuario.UsuarioDTO;
 import com.example.demo.DTO.Usuario.UsuarioUpdateDTO;
 import com.example.demo.Service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,12 +30,12 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public UsuarioDTO create(@RequestBody UsuarioCreateDTO dto) {
+    public UsuarioDTO create(@RequestBody @Valid UsuarioCreateDTO dto) {
         return usuarioService.save(dto);
     }
 
     @PutMapping("/{id}")
-    public UsuarioDTO update(@PathVariable Long id, @RequestBody UsuarioUpdateDTO dto) {
+    public UsuarioDTO update(@PathVariable Long id, @RequestBody @Valid UsuarioUpdateDTO dto) {
         return usuarioService.update(id, dto);
     }
 

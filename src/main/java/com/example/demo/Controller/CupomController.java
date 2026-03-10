@@ -4,6 +4,7 @@ import com.example.demo.DTO.Cupom.CupomCreateDTO;
 import com.example.demo.DTO.Cupom.CupomDTO;
 import com.example.demo.DTO.Cupom.CupomUpdateDTO;
 import com.example.demo.Service.CupomService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,12 +30,12 @@ public class CupomController {
     }
 
     @PostMapping
-    public CupomDTO create(@RequestBody CupomCreateDTO cupom) {
+    public CupomDTO create(@RequestBody @Valid CupomCreateDTO cupom) {
         return cupomService.save(cupom);
     }
 
     @PatchMapping("/{id}")
-    public CupomDTO update(@PathVariable Long id, @RequestBody CupomUpdateDTO cupom) {
+    public CupomDTO update(@PathVariable Long id, @RequestBody @Valid CupomUpdateDTO cupom) {
         return cupomService.update(id, cupom);
     }
 

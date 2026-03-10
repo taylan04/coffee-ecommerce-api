@@ -3,9 +3,8 @@ package com.example.demo.Controller;
 import com.example.demo.DTO.Item.ItemCreateDTO;
 import com.example.demo.DTO.Item.ItemDTO;
 import com.example.demo.DTO.Item.ItemUpdateDTO;
-import com.example.demo.Model.Endereco;
-import com.example.demo.Model.Item;
 import com.example.demo.Service.ItemService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -32,12 +31,12 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDTO create(@RequestBody ItemCreateDTO item) {
+    public ItemDTO create(@RequestBody @Valid ItemCreateDTO item) {
         return itemService.save(item);
     }
 
     @PatchMapping("/{id}")
-    public ItemDTO update(@PathVariable Long id, @RequestBody ItemUpdateDTO item) {
+    public ItemDTO update(@PathVariable Long id, @RequestBody @Valid ItemUpdateDTO item) {
         return itemService.update(id, item);
     }
 

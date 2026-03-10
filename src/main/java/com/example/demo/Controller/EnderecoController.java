@@ -4,6 +4,7 @@ import com.example.demo.DTO.Endereco.EnderecoCreateDTO;
 import com.example.demo.DTO.Endereco.EnderecoDTO;
 import com.example.demo.DTO.Endereco.EnderecoUpdateDTO;
 import com.example.demo.Service.EnderecoService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,12 +30,12 @@ public class EnderecoController {
     }
 
     @PostMapping
-    public EnderecoDTO create(@RequestBody EnderecoCreateDTO endereco) {
+    public EnderecoDTO create(@RequestBody @Valid EnderecoCreateDTO endereco) {
         return enderecoService.save(endereco);
     }
 
     @PatchMapping("/{id}")
-    public EnderecoDTO update(@PathVariable Long id, @RequestBody EnderecoUpdateDTO endereco) {
+    public EnderecoDTO update(@PathVariable Long id, @RequestBody @Valid EnderecoUpdateDTO endereco) {
         return enderecoService.update(id, endereco);
     }
 

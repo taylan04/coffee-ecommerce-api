@@ -5,6 +5,7 @@ import com.example.demo.DTO.Pedido.PedidoDTO;
 import com.example.demo.DTO.Pedido.PedidoUpdateDTO;
 import com.example.demo.Model.Pedido;
 import com.example.demo.Service.PedidoService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -31,12 +32,12 @@ public class PedidoController {
     }
 
     @PostMapping
-    public PedidoDTO create(@RequestBody PedidoCreateDTO pedido) {
+    public PedidoDTO create(@RequestBody @Valid PedidoCreateDTO pedido) {
         return pedidoService.save(pedido);
     }
 
     @PatchMapping("/{id}")
-    public PedidoDTO update(@PathVariable Long id, @RequestBody PedidoUpdateDTO pedido) {
+    public PedidoDTO update(@PathVariable Long id, @RequestBody @Valid PedidoUpdateDTO pedido) {
         return pedidoService.update(id, pedido);
     }
 

@@ -3,6 +3,8 @@ package com.example.demo.Controller;
 import com.example.demo.DTO.Credencial.CredencialCreateDTO;
 import com.example.demo.DTO.Credencial.CredencialDTO;
 import com.example.demo.DTO.Credencial.CredencialUpdateDTO;
+import com.example.demo.DTO.Login.LoginRequestDTO;
+import com.example.demo.DTO.Login.LoginRespostaDTO;
 import com.example.demo.Service.CredencialService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,7 @@ public class CredencialController {
         return credencialService.findAll();
     }
 
+    //@Valid funciona para o controller validar as anotações colocadas nos DTOs
     @PostMapping
     public CredencialDTO create(@RequestBody @Valid CredencialCreateDTO credencial) {
         return credencialService.save(credencial);
@@ -48,5 +51,11 @@ public class CredencialController {
         credencialService.delete(id);
     }
 
+
+    //Controladores fora do CRUD
+    @PostMapping("/login")
+    public LoginRespostaDTO login(@RequestBody @Valid LoginRequestDTO dto) {
+        return credencialService.verificarAutenticidade(dto);
+    }
 }
 

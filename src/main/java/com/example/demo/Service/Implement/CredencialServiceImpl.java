@@ -3,7 +3,8 @@ package com.example.demo.Service.Implement;
 import com.example.demo.DTO.Credencial.CredencialCreateDTO;
 import com.example.demo.DTO.Credencial.CredencialDTO;
 import com.example.demo.DTO.Credencial.CredencialUpdateDTO;
-import com.example.demo.DTO.LoginRespostaDTO;
+import com.example.demo.DTO.Login.LoginRequestDTO;
+import com.example.demo.DTO.Login.LoginRespostaDTO;
 import com.example.demo.Model.Credencial;
 import com.example.demo.Repository.CredencialRepository;
 import com.example.demo.Service.CredencialService;
@@ -92,9 +93,9 @@ public class CredencialServiceImpl implements CredencialService {
     }
 
     @Override
-    public LoginRespostaDTO verificarAutenticidade(Credencial credencial) {
+    public LoginRespostaDTO verificarAutenticidade(LoginRequestDTO login) {
 
-        Optional<Credencial> existente = credencialRepository.findByEmail(credencial.getEmail());
+        Optional<Credencial> existente = credencialRepository.findByEmail(login.email());
 
         if (existente.isEmpty()) {
             return new LoginRespostaDTO(false, "Usuário não encontrado.", null, null);
@@ -104,7 +105,7 @@ public class CredencialServiceImpl implements CredencialService {
         Credencial credencialExistente = existente.get();
 
         //esse matches compara a senha hash salva no banco com o hash da senha digitada
-        if (!passwordEncoder.matches(credencial.getSenha(), credencialExistente.getSenha())) {
+        if (!passwordEncoder.matches(login.email(), credencialExistente.getSenha())) {
             return new LoginRespostaDTO(false, "Senha inválida", null, null);
         }
 

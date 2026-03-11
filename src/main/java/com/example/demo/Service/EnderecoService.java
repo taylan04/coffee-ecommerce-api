@@ -12,5 +12,4 @@ public interface EnderecoService {
     public EnderecoDTO save(EnderecoCreateDTO endereco);
     public EnderecoDTO update(Long id, EnderecoUpdateDTO endereco);
     public void delete(Long id);
-    public EnderecoDTO buscarPorUsuario(Long id);
-}
+    public List<EnderecoDTO> buscarPorUsuario(Long id);}

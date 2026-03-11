@@ -1,5 +1,6 @@
 package com.example.demo.Service.Implement;
 
+import com.example.demo.DTO.Endereco.EnderecoDTO;
 import com.example.demo.DTO.Item.ItemCreateDTO;
 import com.example.demo.DTO.Item.ItemDTO;
 import com.example.demo.DTO.Item.ItemUpdateDTO;
@@ -79,5 +80,15 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void delete(Long id) {
         itemRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ItemDTO> buscarPorPedido(Long idPedido) {
+        List<Item> itens = itemRepository.findByPedidoIdPedido(idPedido);
+        List<ItemDTO> itensDTOS = new ArrayList<>();
+        for (Item item : itens) {
+            itensDTOS.add(new ItemDTO(item));
+        }
+        return itensDTOS;
     }
 }

@@ -102,8 +102,13 @@ public class EnderecoServiceImpl implements EnderecoService {
         enderecoRepository.deleteById(id);
     }
 
-    public EnderecoDTO buscarPorUsuario(Long id) {
-        Endereco endereco = enderecoRepository.findByIdUsuario(id).orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
-        return new EnderecoDTO(endereco);
+    @Override
+    public List<EnderecoDTO> buscarPorUsuario(Long idUsuario) {
+        List<Endereco> enderecos = enderecoRepository.findByUsuarioIdUsuario(idUsuario);
+        List<EnderecoDTO> enderecosDTOS = new ArrayList<>();
+        for (Endereco endereco : enderecos) {
+            enderecosDTOS.add(new EnderecoDTO(endereco));
+        }
+        return enderecosDTOS;
     }
 }

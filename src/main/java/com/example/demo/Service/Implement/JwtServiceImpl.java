@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    @Value("${jwt.secret}") // usa a senha que está na .env e especificada em application.properties
+    @Value("${jwt.secret}") // usa a senha que está na ..env e especificada em application.properties
     private String SECRET_KEY;
 
     // Token válido por 1 hora

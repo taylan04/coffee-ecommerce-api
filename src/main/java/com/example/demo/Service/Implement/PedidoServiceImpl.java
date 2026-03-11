@@ -1,10 +1,12 @@
 package com.example.demo.Service.Implement;
 
+import com.example.demo.DTO.Endereco.EnderecoDTO;
 import com.example.demo.DTO.Pedido.PedidoCreateDTO;
 import com.example.demo.DTO.Pedido.PedidoDTO;
 import com.example.demo.DTO.Pedido.PedidoUpdateDTO;
 import com.example.demo.Exception.ResourceNotFoundException;
 import com.example.demo.Model.Cupom;
+import com.example.demo.Model.Endereco;
 import com.example.demo.Model.Pedido;
 import com.example.demo.Model.Usuario;
 import com.example.demo.Repository.CupomRepository;
@@ -88,5 +90,15 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public void delete(Long id) {
         pedidoRepository.deleteById(id);
+    }
+
+    @Override
+    public List<PedidoDTO> buscarPorUsuario(Long idUsuario) {
+        List<Pedido> pedidos = pedidoRepository.findByUsuarioIdUsuario(idUsuario);
+        List<PedidoDTO> pedidosDTOS = new ArrayList<>();
+        for (Pedido pedido : pedidos) {
+            pedidosDTOS.add(new PedidoDTO(pedido));
+        }
+        return pedidosDTOS;
     }
 }

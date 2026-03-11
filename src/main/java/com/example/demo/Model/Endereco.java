@@ -23,9 +23,9 @@ public class Endereco {
     private String logradouro;
     @Column(name = "numero", nullable = false)
     private Integer numero;
-    @Column(name = "complemento", nullable = false , length = 100)
+    @Column(name = "complemento", nullable = true , length = 100)
     private String complemento;
-    @Column(name = "referencia", nullable = false , length = 100)
+    @Column(name = "referencia", nullable = true , length = 100)
     private String referencia;
     @Column(name = "bairro", nullable = false , length = 100)
     private String bairro;

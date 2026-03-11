@@ -54,10 +54,13 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoDTO save(PedidoCreateDTO dto) {
         Usuario usuario = usuarioRepository.findById(dto.idUsuario())
-                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-        Cupom cupom = cupomRepository.findById(dto.idCupom())
-                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
+        Cupom cupom = null;
+        if (dto.idCupom() != null) {
+            cupom = cupomRepository.findById(dto.idCupom())
+                    .orElseThrow(() -> new ResourceNotFoundException("Cupom não encontrado"));
+        }
 
         Pedido pedido = new Pedido(dto, cupom, usuario);
         return new PedidoDTO(pedidoRepository.save(pedido));

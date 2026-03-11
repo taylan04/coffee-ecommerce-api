@@ -14,6 +14,6 @@ public record CupomCreateDTO (
         BigDecimal valor,
         @NotBlank(message = "O tipo do cupom precisa ser válido.")
         String tipo,
-        @NotBlank(message = "O estado do cupom precisa ser válido.")
+        @NotNull(message = "O estado do cupom precisa ser válido.")
         enumCupom estado
 ) {}

@@ -47,7 +47,7 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Override
     public EnderecoDTO save(EnderecoCreateDTO dto) {
-        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
+        Usuario usuario = usuarioRepository.findById(dto.idUsuario())
                 .orElseThrow(() -> new ResourceNotFoundException("Endereco não encontrado"));
         Endereco endereco = new Endereco(dto, usuario);
         return new EnderecoDTO(enderecoRepository.save(endereco));

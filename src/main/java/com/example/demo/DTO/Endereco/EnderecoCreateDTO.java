@@ -5,10 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record EnderecoCreateDTO(
-        @NotBlank Long usuarioId,
-        @NotBlank String logradouro,
+        @NotNull
+        Long idUsuario,
+        @NotBlank
+        String logradouro,
         //@NotEmpty verifica se o valor não é null e se o tamanho é maior que zero.
-        @NotNull @Min(1) Integer numero,
+        @NotNull @Min(1)
+        Integer numero,
         String complemento,
         String referencia,
         @NotBlank String bairro,

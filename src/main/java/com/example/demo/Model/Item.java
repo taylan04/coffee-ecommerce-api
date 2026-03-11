@@ -19,7 +19,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_item", nullable = false)
     private Long idItem;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_produto")
     private Produto produto;
     @ManyToOne

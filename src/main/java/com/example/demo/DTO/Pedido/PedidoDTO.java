@@ -18,7 +18,7 @@ public record PedidoDTO(
         this(
                 pedido.getIdPedido(),
                 pedido.getUsuario().getIdUsuario(),
-                pedido.getCupom().getIdCupom(),
+                pedido.getCupom() != null ? pedido.getCupom().getIdCupom() : null,
                 pedido.getEstado(),
                 pedido.getDesconto(),
                 pedido.getDataPedido(),

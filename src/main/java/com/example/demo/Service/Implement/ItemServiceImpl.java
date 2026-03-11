@@ -4,15 +4,14 @@ import com.example.demo.DTO.Endereco.EnderecoDTO;
 import com.example.demo.DTO.Item.ItemCreateDTO;
 import com.example.demo.DTO.Item.ItemDTO;
 import com.example.demo.DTO.Item.ItemUpdateDTO;
+import com.example.demo.Exception.ResourceNotFoundException;
 import com.example.demo.Model.*;
 import com.example.demo.Repository.ItemRepository;
 import com.example.demo.Repository.PedidoRepository;
 import com.example.demo.Repository.ProdutoRepository;
-import com.example.demo.Repository.UsuarioRepository;
 import com.example.demo.Service.ItemService;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDTO findById(Long id) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado"));
 
         return new ItemDTO(item);
     }
@@ -52,10 +51,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDTO save(ItemCreateDTO dto) {
         Produto produto = produtoRepository.findById(dto.idProduto())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado"));
 
         Pedido pedido = pedidoRepository.findById(dto.idPedido())
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado"));
 
         Item item = new Item(dto, produto, pedido);
         return new ItemDTO(itemRepository.save(item));
@@ -64,7 +63,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDTO update(Long id, ItemUpdateDTO novo) {
         Item existente = itemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado"));
 
         if (novo.quantidade() != null) {
             existente.setQuantidade(novo.quantidade());

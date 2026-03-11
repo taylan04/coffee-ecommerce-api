@@ -3,14 +3,13 @@ package com.example.demo.Service.Implement;
 import com.example.demo.DTO.Endereco.EnderecoCreateDTO;
 import com.example.demo.DTO.Endereco.EnderecoDTO;
 import com.example.demo.DTO.Endereco.EnderecoUpdateDTO;
+import com.example.demo.Exception.ResourceNotFoundException;
 import com.example.demo.Model.Endereco;
 import com.example.demo.Model.Usuario;
 import com.example.demo.Repository.EnderecoRepository;
 import com.example.demo.Repository.UsuarioRepository;
 import com.example.demo.Service.EnderecoService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ public class EnderecoServiceImpl implements EnderecoService {
     public EnderecoDTO findById(Long id) {
         //estou pensando se coloco HttpStatus em todos, pois retorna 404, 500 ou 200
         Endereco endereco = enderecoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Endereco não encontrado"));
 
         return new EnderecoDTO(endereco);
     }
@@ -49,7 +48,7 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Override
     public EnderecoDTO save(EnderecoCreateDTO dto) {
         Usuario usuario = usuarioRepository.findById(dto.usuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Endereco não encontrado"));
         Endereco endereco = new Endereco(dto, usuario);
         return new EnderecoDTO(enderecoRepository.save(endereco));
     }
@@ -57,7 +56,7 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Override
     public EnderecoDTO update(Long id, EnderecoUpdateDTO novo) {
         Endereco existente = enderecoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Endereço não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Endereco não encontrado"));
 
         if (novo.logradouro() != null) {
             existente.setLogradouro(novo.logradouro());

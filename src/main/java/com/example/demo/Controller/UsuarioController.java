@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
+
     private final UsuarioService usuarioService;
     private final EnderecoService enderecoService;
     private final PedidoService pedidoService;

@@ -5,9 +5,11 @@ import com.example.demo.DTO.Credencial.CredencialDTO;
 import com.example.demo.DTO.Credencial.CredencialUpdateDTO;
 import com.example.demo.DTO.Login.LoginRequestDTO;
 import com.example.demo.DTO.Login.LoginRespostaDTO;
+import com.example.demo.Exception.ResourceNotFoundException;
 import com.example.demo.Model.Credencial;
 import com.example.demo.Repository.CredencialRepository;
 import com.example.demo.Service.CredencialService;
+import com.example.demo.Service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,10 +28,12 @@ public class CredencialServiceImpl implements CredencialService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private JwtServiceImpl jwtService;
+    private final JwtService jwtService;
 
-    public CredencialServiceImpl(CredencialRepository credencialRepository) {
+    @Autowired
+    public CredencialServiceImpl(CredencialRepository credencialRepository, JwtService jwtService) {
         this.credencialRepository = credencialRepository;
+        this.jwtService = jwtService;
     }
 
     //Esses @Override em cima dos métodos é pra dizer olha, estou usando esse método que está na interface
@@ -40,7 +44,7 @@ public class CredencialServiceImpl implements CredencialService {
     @Override
     public CredencialDTO findById(Long id) {
         Credencial credencial = credencialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Credencial não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Credencial não encontrado"));
         //.orElseThrow() faz com que o método retorno um objeto invés de um Optional
 
         return new CredencialDTO(credencial);
@@ -72,7 +76,7 @@ public class CredencialServiceImpl implements CredencialService {
     @Override
     public CredencialDTO update(Long id, CredencialUpdateDTO dto) {
         Credencial existente = credencialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Credencial não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Credencial não encontrado"));
 
         if (dto.senha() != null) {
             existente.setSenha(dto.senha());
@@ -105,7 +109,7 @@ public class CredencialServiceImpl implements CredencialService {
         Credencial credencialExistente = existente.get();
 
         //esse matches compara a senha hash salva no banco com o hash da senha digitada
-        if (!passwordEncoder.matches(login.email(), credencialExistente.getSenha())) {
+        if (!passwordEncoder.matches(login.senha(), credencialExistente.getSenha())) {
             return new LoginRespostaDTO(false, "Senha inválida", null, null);
         }
 

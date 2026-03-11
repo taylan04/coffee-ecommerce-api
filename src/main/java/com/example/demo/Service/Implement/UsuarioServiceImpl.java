@@ -3,6 +3,7 @@ package com.example.demo.Service.Implement;
 import com.example.demo.DTO.Usuario.UsuarioCreateDTO;
 import com.example.demo.DTO.Usuario.UsuarioDTO;
 import com.example.demo.DTO.Usuario.UsuarioUpdateDTO;
+import com.example.demo.Exception.ResourceNotFoundException;
 import com.example.demo.Model.Usuario;
 import com.example.demo.Repository.UsuarioRepository;
 import com.example.demo.Service.UsuarioService;
@@ -23,7 +24,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioDTO findById(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado"));
 
         return new UsuarioDTO(usuario);
     }
@@ -55,7 +56,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioDTO update(Long id, UsuarioUpdateDTO dto) {
 
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado"));
 
         if (dto.nome() != null) {
             usuario.setNome(dto.nome());

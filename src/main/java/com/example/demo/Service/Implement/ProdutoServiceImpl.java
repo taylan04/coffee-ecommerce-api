@@ -3,6 +3,7 @@ package com.example.demo.Service.Implement;
 import com.example.demo.DTO.Produto.ProdutoCreateDTO;
 import com.example.demo.DTO.Produto.ProdutoDTO;
 import com.example.demo.DTO.Produto.ProdutoUpdateDTO;
+import com.example.demo.Exception.RecursoNaoEncontradoExcecao;
 import com.example.demo.Model.Produto;
 import com.example.demo.Repository.ProdutoRepository;
 import com.example.demo.Service.ProdutoService;
@@ -23,7 +24,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Override
     public ProdutoDTO findById(Long id) {
         Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Produto não encontrado"));
 
         return new ProdutoDTO(produto);
     }
@@ -50,7 +51,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     public ProdutoDTO update(Long id, ProdutoUpdateDTO novo) {
 
         Produto existente = produtoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Produto não encontrado"));
 
         if (novo.titulo() != null) {
             existente.setTitulo(novo.titulo());

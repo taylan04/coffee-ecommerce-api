@@ -3,6 +3,7 @@ package com.example.demo.Service.Implement;
 import com.example.demo.DTO.Item.ItemCreateDTO;
 import com.example.demo.DTO.Item.ItemDTO;
 import com.example.demo.DTO.Item.ItemUpdateDTO;
+import com.example.demo.Exception.RecursoNaoEncontradoExcecao;
 import com.example.demo.Model.*;
 import com.example.demo.Repository.ItemRepository;
 import com.example.demo.Repository.PedidoRepository;
@@ -31,7 +32,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDTO findById(Long id) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Item não encontrado"));
 
         return new ItemDTO(item);
     }
@@ -51,10 +52,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDTO save(ItemCreateDTO dto) {
         Produto produto = produtoRepository.findById(dto.idProduto())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Item não encontrado"));
 
         Pedido pedido = pedidoRepository.findById(dto.idPedido())
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Item não encontrado"));
 
         Item item = new Item(dto, produto, pedido);
         return new ItemDTO(itemRepository.save(item));
@@ -63,7 +64,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDTO update(Long id, ItemUpdateDTO novo) {
         Item existente = itemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item não encontrada."));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Item não encontrado"));
 
         if (novo.quantidade() != null) {
             existente.setQuantidade(novo.quantidade());

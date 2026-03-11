@@ -5,6 +5,7 @@ import com.example.demo.DTO.Credencial.CredencialDTO;
 import com.example.demo.DTO.Credencial.CredencialUpdateDTO;
 import com.example.demo.DTO.Login.LoginRequestDTO;
 import com.example.demo.DTO.Login.LoginRespostaDTO;
+import com.example.demo.Exception.RecursoNaoEncontradoExcecao;
 import com.example.demo.Model.Credencial;
 import com.example.demo.Repository.CredencialRepository;
 import com.example.demo.Service.CredencialService;
@@ -40,7 +41,7 @@ public class CredencialServiceImpl implements CredencialService {
     @Override
     public CredencialDTO findById(Long id) {
         Credencial credencial = credencialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Credencial não encontrada."));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Credencial não encontrado"));
         //.orElseThrow() faz com que o método retorno um objeto invés de um Optional
 
         return new CredencialDTO(credencial);
@@ -72,7 +73,7 @@ public class CredencialServiceImpl implements CredencialService {
     @Override
     public CredencialDTO update(Long id, CredencialUpdateDTO dto) {
         Credencial existente = credencialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Credencial não encontrada."));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Credencial não encontrado"));
 
         if (dto.senha() != null) {
             existente.setSenha(dto.senha());

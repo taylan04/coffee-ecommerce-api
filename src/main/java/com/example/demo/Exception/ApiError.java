@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-public record ApiError (
+public record ApiError(
         @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
         LocalDateTime data_hora,
         Integer codigo,

@@ -3,6 +3,7 @@ package com.example.demo.Service.Implement;
 import com.example.demo.DTO.Pedido.PedidoCreateDTO;
 import com.example.demo.DTO.Pedido.PedidoDTO;
 import com.example.demo.DTO.Pedido.PedidoUpdateDTO;
+import com.example.demo.Exception.RecursoNaoEncontradoExcecao;
 import com.example.demo.Model.Cupom;
 import com.example.demo.Model.Pedido;
 import com.example.demo.Model.Usuario;
@@ -33,7 +34,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoDTO findById(Long id) {
         Pedido pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Pedido não encontrado"));
 
         return new PedidoDTO(pedido);
     }
@@ -53,10 +54,10 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoDTO save(PedidoCreateDTO dto) {
         Usuario usuario = usuarioRepository.findById(dto.idUsuario())
-                .orElseThrow(() -> new RuntimeException("Usuario não encontrado!"));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Pedido não encontrado"));
 
         Cupom cupom = cupomRepository.findById(dto.idCupom())
-                .orElseThrow(() -> new RuntimeException("Cupom não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Pedido não encontrado"));
 
         Pedido pedido = new Pedido(dto, cupom, usuario);
         return new PedidoDTO(pedidoRepository.save(pedido));
@@ -65,7 +66,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoDTO update(Long id, PedidoUpdateDTO novo) {
         Pedido existente = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Pedido não encontrado"));
 
         if (novo.estado() != null) {
             existente.setEstado(novo.estado());

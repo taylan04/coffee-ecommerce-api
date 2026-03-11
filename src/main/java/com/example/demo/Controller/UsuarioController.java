@@ -1,6 +1,7 @@
 package com.example.demo.Controller;
 
 import com.example.demo.DTO.Endereco.EnderecoDTO;
+import com.example.demo.DTO.Pedido.PedidoDTO;
 import com.example.demo.DTO.Usuario.UsuarioCreateDTO;
 import com.example.demo.DTO.Usuario.UsuarioDTO;
 import com.example.demo.DTO.Usuario.UsuarioUpdateDTO;
@@ -18,10 +19,12 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
     private final EnderecoService enderecoService;
+    private final PedidoService pedidoService;
 
     public UsuarioController(UsuarioService usuarioService, EnderecoService enderecoService, PedidoService pedidoService) {
         this.usuarioService = usuarioService;
         this.enderecoService = enderecoService;
+        this.pedidoService = pedidoService;
     }
     @GetMapping("/{id}")
     public UsuarioDTO findById(@PathVariable Long id) {
@@ -53,4 +56,8 @@ public class UsuarioController {
         return enderecoService.buscarPorUsuario(id);
     }
 
+    @GetMapping("/{id}/pedidos")
+    public List<PedidoDTO> findAllPedido(@PathVariable Long id) {
+        return pedidoService.buscarPorUsuario(id);
+    }
 }

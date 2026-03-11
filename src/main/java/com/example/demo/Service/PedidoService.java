@@ -15,4 +15,5 @@ public interface PedidoService {
     public PedidoDTO save(PedidoCreateDTO pedido);
     public PedidoDTO update(Long id, PedidoUpdateDTO pedido);
     public void delete(Long id);
+    public List<PedidoDTO> buscarPorUsuario(Long id);
 }

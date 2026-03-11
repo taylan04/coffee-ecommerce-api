@@ -9,6 +9,7 @@ import com.example.demo.Exception.ResourceNotFoundException;
 import com.example.demo.Model.Credencial;
 import com.example.demo.Repository.CredencialRepository;
 import com.example.demo.Service.CredencialService;
+import com.example.demo.Service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,12 @@ public class CredencialServiceImpl implements CredencialService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private JwtServiceImpl jwtService;
+    private final JwtService jwtService;
 
-    public CredencialServiceImpl(CredencialRepository credencialRepository) {
+    @Autowired
+    public CredencialServiceImpl(CredencialRepository credencialRepository, JwtService jwtService) {
         this.credencialRepository = credencialRepository;
+        this.jwtService = jwtService;
     }
 
     //Esses @Override em cima dos métodos é pra dizer olha, estou usando esse método que está na interface
@@ -106,7 +109,7 @@ public class CredencialServiceImpl implements CredencialService {
         Credencial credencialExistente = existente.get();
 
         //esse matches compara a senha hash salva no banco com o hash da senha digitada
-        if (!passwordEncoder.matches(login.email(), credencialExistente.getSenha())) {
+        if (!passwordEncoder.matches(login.senha(), credencialExistente.getSenha())) {
             return new LoginRespostaDTO(false, "Senha inválida", null, null);
         }
 

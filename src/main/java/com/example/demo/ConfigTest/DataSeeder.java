@@ -1,17 +1,12 @@
 package com.example.demo.ConfigTest;
 
 import com.example.demo.DTO.Credencial.CredencialCreateDTO;
+import com.example.demo.DTO.Cupom.CupomCreateDTO;
 import com.example.demo.DTO.Endereco.EnderecoCreateDTO;
 import com.example.demo.DTO.Produto.ProdutoCreateDTO;
 import com.example.demo.DTO.Usuario.UsuarioCreateDTO;
-import com.example.demo.Model.Credencial;
-import com.example.demo.Model.Endereco;
-import com.example.demo.Model.Produto;
-import com.example.demo.Model.Usuario;
-import com.example.demo.Repository.CredencialRepository;
-import com.example.demo.Repository.EnderecoRepository;
-import com.example.demo.Repository.ProdutoRepository;
-import com.example.demo.Repository.UsuarioRepository;
+import com.example.demo.Model.*;
+import com.example.demo.Repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -157,6 +152,34 @@ public class DataSeeder {
                         "Um café de personalidade forte, ideal para quem aprecia uma bebida intensa, estruturada e de alto rendimento.","https://graoseprosa.com.br/wp-content/uploads/2026/01/Captura-de-tela-de-2026-01-28-11-44-46.png","CAFE",new BigDecimal("48.00"),10);
                 produto = modelMapper.map(produtoDTO, Produto.class);
                 produtoRepository.save(produto);
+
+            }
+        };
+    }
+    @Bean
+    @Order(5)
+    CommandLineRunner seedCupom(CupomRepository cupomRepository, ModelMapper modelMapper) {
+        return args -> {
+            if (cupomRepository.count() == 0) {
+                CupomCreateDTO cupomDTO = new CupomCreateDTO("DESCONTO10", new BigDecimal("10.00"),"FIXO",enumCupom.ATIVO);
+                Cupom cupom = modelMapper.map(cupomDTO, Cupom.class);
+                cupomRepository.save(cupom);
+
+                cupomDTO = new CupomCreateDTO("PROMO20", new BigDecimal("20.00"),"PERCENTUAL",enumCupom.ATIVO);
+                cupom = modelMapper.map(cupomDTO, Cupom.class);
+                cupomRepository.save(cupom);
+
+                cupomDTO = new CupomCreateDTO("BLACK50", new BigDecimal("50.00"),"PERCENTUAL",enumCupom.EXPIRADO);
+                cupom = modelMapper.map(cupomDTO, Cupom.class);
+                cupomRepository.save(cupom);
+
+                cupomDTO = new CupomCreateDTO("WELCOME5", new BigDecimal("1.00"),"FIXO",enumCupom.APLICADO);
+                cupom = modelMapper.map(cupomDTO, Cupom.class);
+                cupomRepository.save(cupom);
+
+                cupomDTO = new CupomCreateDTO("CAFEBOM", new BigDecimal("15.00"),"FIXO",enumCupom.RESGATADO);
+                cupom = modelMapper.map(cupomDTO, Cupom.class);
+                cupomRepository.save(cupom);
 
             }
         };

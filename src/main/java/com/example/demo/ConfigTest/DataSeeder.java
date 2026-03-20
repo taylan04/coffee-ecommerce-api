@@ -3,6 +3,7 @@ package com.example.demo.ConfigTest;
 import com.example.demo.DTO.Credencial.CredencialCreateDTO;
 import com.example.demo.DTO.Cupom.CupomCreateDTO;
 import com.example.demo.DTO.Endereco.EnderecoCreateDTO;
+import com.example.demo.DTO.Item.ItemCreateDTO;
 import com.example.demo.DTO.Pedido.PedidoCreateDTO;
 import com.example.demo.DTO.Produto.ProdutoCreateDTO;
 import com.example.demo.DTO.Usuario.UsuarioCreateDTO;
@@ -210,6 +211,61 @@ public class DataSeeder {
                 pedidoDTO = new PedidoCreateDTO(5L, null,"CANCELADO",null, LocalDateTime.now(),new BigDecimal("99.00"), new BigDecimal("99.00"));
                 pedido = modelMapper.map(pedidoDTO, Pedido.class);
                 pedidoRepository.save(pedido);
+            }
+        };
+    }
+    @Bean
+    @Order(7)
+    CommandLineRunner seedItem(ItemRepository itemRepository, ModelMapper modelMapper) {
+        return args -> {
+            if (itemRepository.count() == 0) {
+                ItemCreateDTO itemDTO = new ItemCreateDTO(1L, 2L,2,new BigDecimal("28.00"));
+                Item item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(2L, 1L,1,new BigDecimal("89.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(1L, 1L,3,new BigDecimal("28.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(3L, 2L,1,new BigDecimal("15.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(2L, 2L,1,new BigDecimal("11.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(5L, 2L,1,new BigDecimal("53.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(1L, 3L,2,new BigDecimal("28.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(4L, 3L,3,new BigDecimal("98.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(4L, 4L,2,new BigDecimal("98.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(5L, 4L,2,new BigDecimal("53.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(2L, 4L,2,new BigDecimal("89.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
+
+                itemDTO = new ItemCreateDTO(1L, 5L,2,new BigDecimal("28.00"));
+                item = modelMapper.map(itemDTO, Item.class);
+                itemRepository.save(item);
             }
         };
     }

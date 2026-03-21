@@ -3,8 +3,11 @@ package com.example.demo.Model;
 import com.example.demo.DTO.Auth.GoogleUserData;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,8 +29,9 @@ public class Credencial {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "credencial_roles", joinColumns = @JoinColumn(name = "id_credencial"))
     @Column(name = "role")
-    private List<String> roles;
-    @OneToOne
+    @Enumerated(EnumType.STRING)
+    private List<Role> roles = new ArrayList<>(List.of(Role.USER));
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
     @Column(name = "email", unique = true, nullable = false, length = 80)
@@ -35,7 +39,11 @@ public class Credencial {
     @Column(name = "senha", nullable = false, length = 100)
     private String senha;
     @Column(name = "criado_em", nullable = false)
-    private LocalDateTime criado_em;
+    @CreationTimestamp // seta o .now() automaticamente quando criar
+    private LocalDateTime criadoEm;
+    @Column(name = "atualizado_em", nullable = false)
+    @UpdateTimestamp // atualiza a data sempre que houver um update
+    private LocalDateTime atualizadoEm;
     @Enumerated(EnumType.STRING)
     @Column(name = "provedor", nullable = false)
     private AuthProvedor provedor = AuthProvedor.LOCAL;

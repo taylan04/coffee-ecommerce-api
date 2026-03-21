@@ -4,6 +4,7 @@ import com.example.demo.DTO.Credencial.CredencialCreateDTO;
 import com.example.demo.DTO.Credencial.CredencialDTO;
 import com.example.demo.DTO.Credencial.CredencialUpdateDTO;
 import com.example.demo.Exception.ResourceNotFoundException;
+import com.example.demo.Model.AuthProvedor;
 import com.example.demo.Model.Credencial;
 import com.example.demo.Repository.CredencialRepository;
 import com.example.demo.Service.CredencialService;
@@ -66,19 +67,22 @@ public class CredencialServiceImpl implements CredencialService {
 
     @Override
     public CredencialDTO update(Long id, CredencialUpdateDTO dto) {
+
         Credencial existente = credencialRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Credencial não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Credencial não encontrada"));
+
+        if (existente.getProvedor() == AuthProvedor.GOOGLE) {
+            throw new IllegalStateException("Usuários autenticados com Google não podem alterar credenciais.");
+        }
 
         if (dto.senha() != null) {
             existente.setSenha(passwordEncoder.encode(dto.senha()));
         }
 
-        if (dto.email() != null ) {
+        if (dto.email() != null) {
             existente.setEmail(dto.email());
         }
 
-        //melhor retornar o objeto ou null?
-        //Respondido: em padrão de mercado, não se deve retornar null. ( má prática )
         return new CredencialDTO(credencialRepository.save(existente));
     }
 

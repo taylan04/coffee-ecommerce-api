@@ -29,11 +29,11 @@ public class Usuario {
     private String nome;
     @Column(name = "sobrenome", nullable = false , length = 100)
     private String sobrenome;
-    @Column(name = "telefone", nullable = false , length = 20)
+    @Column(name = "telefone", nullable = true , length = 20)
     private String telefone;
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "aniversario", nullable = true)
     private LocalDate aniversario;
     @Column(name = "deletado_em", nullable = true)
-    private LocalDateTime deletado_em;
+    private LocalDateTime deletadoEm;
 }

@@ -4,6 +4,7 @@ import com.example.demo.DTO.Pedido.PedidoCreateDTO;
 import com.example.demo.DTO.Pedido.PedidoDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -32,6 +33,7 @@ public class Pedido {
     @Column(name = "desconto", nullable = true , precision = 10 , scale = 2)
     private BigDecimal desconto;
     @Column(name = "data_pedido", nullable = false)
+    @CreationTimestamp
     private LocalDateTime dataPedido;
     @Column(name = "valor_total", nullable = true , precision = 10 , scale = 2)
     private BigDecimal valorTotal;

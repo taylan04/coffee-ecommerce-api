@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-    private final CredencialRepository credencialRepository;
     private final GoogleService googleService;
-    private final TokenService tokenService;
 
     public AuthController(AuthService authService, CredencialRepository credencialRepository, GoogleService googleService, TokenService tokenService) {
         this.authService = authService;
@@ -41,17 +39,9 @@ public class AuthController {
         return authService.verificarAutenticidade(dto);
     }
 
-    @PostMapping("/auth/google")
+    @PostMapping("/google")
     public LoginRespostaDTO loginGoogle(@RequestBody LoginGoogleDTO dto) {
-
-        GoogleUserData data = googleService.validarToken(dto.token());
-
-        Credencial credencial = credencialRepository.findByEmail(data.email())
-                .orElseGet(() -> criarUsuarioGoogle(data));
-
-        String token = tokenService.gerarToken(credencial);
-
-        return new LoginRespostaDTO(token);
+        return googleService.logarComGoogle(dto);
     }
 
     /* decidir se isso vai ficar assim

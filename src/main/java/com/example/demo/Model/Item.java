@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 @Entity
 @Table(name = "item")
@@ -20,8 +19,8 @@ public class Item {
     @Column(name = "id_item", nullable = false)
     private Long idItem;
     @ManyToOne
-    @JoinColumn(name = "id_produto")
-    private Produto produto;
+    @JoinColumn(name = "id_variante", nullable = false)
+    private Variante variante;
     @ManyToOne
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
@@ -30,8 +29,8 @@ public class Item {
     @Column(name = "subtotal", nullable = false , precision = 10 , scale = 2)
     private BigDecimal subtotal;
 
-    public Item(ItemCreateDTO dto, Produto produto, Pedido pedido) {
-        this.produto = produto;
+    public Item(ItemCreateDTO dto, Variante variante, Pedido pedido) {
+        this.variante = variante;
         this.pedido = pedido;
         this.quantidade = dto.quantidade();
         this.subtotal = dto.subtotal();

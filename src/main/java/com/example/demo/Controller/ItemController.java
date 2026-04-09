@@ -6,8 +6,6 @@ import com.example.demo.DTO.Item.ItemUpdateDTO;
 import com.example.demo.Service.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigInteger;
 import java.util.List;
 
 @RestController

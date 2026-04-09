@@ -3,9 +3,6 @@ package com.example.demo.Service;
 import com.example.demo.DTO.Item.ItemCreateDTO;
 import com.example.demo.DTO.Item.ItemDTO;
 import com.example.demo.DTO.Item.ItemUpdateDTO;
-import com.example.demo.Model.Item;
-
-import java.math.BigInteger;
 import java.util.List;
 
 public interface ItemService {

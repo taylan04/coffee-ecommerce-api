@@ -1,9 +1,10 @@
 package com.example.demo.Model;
 
-import com.example.demo.DTO.Produto.ProdutoCreateDTO;
 import jakarta.persistence.*;
 import lombok.*;
-import java.math.BigDecimal;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "produto")
@@ -21,21 +22,12 @@ public class Produto {
     private String titulo;
     @Column(name = "descricao", nullable = false , length = 1024)
     private String descricao;
-    @Column(name = "imagem", nullable = false)
-    private String imagemUrl;
-    @Column(name = "tipo", nullable = false , length = 50)
-    private String tipo;
-    @Column(name = "preco", nullable = false , precision = 10 , scale = 2)
-    private BigDecimal preco;
-    @Column(name = "quantidade", nullable = false)
-    private Integer quantidade;
+    @Column(name = "categoria", nullable = false , length = 100)
+    private String categoria;
 
-    public Produto(ProdutoCreateDTO produto) {
-        this.titulo = produto.titulo();
-        this.descricao = produto.descricao();
-        this.tipo = produto.tipo();
-        this.imagemUrl = produto.imagemUrl();
-        this.preco = produto.preco();
-        this.quantidade = produto.quantidade();
-    }
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Variante> variantes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImagemProduto> imagens = new ArrayList<>();
 }

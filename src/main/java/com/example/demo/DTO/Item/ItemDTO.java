@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 public record ItemDTO (
         Long id,
         Long idProduto,
+        Long idVariante,
         Long idPedido,
         Integer quantidade,
         BigDecimal subtotal
@@ -15,7 +16,8 @@ public record ItemDTO (
     public ItemDTO(Item item) {
         this(
                 item.getIdItem(),
-                item.getProduto().getIdProduto(),
+                item.getVariante().getProduto().getIdProduto(),
+                item.getVariante().getIdVariante(),
                 item.getPedido().getIdPedido(),
                 item.getQuantidade(),
                 item.getSubtotal()

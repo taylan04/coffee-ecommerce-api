@@ -1,13 +1,11 @@
 package com.example.demo.Model;
 
 import com.example.demo.DTO.Pedido.PedidoCreateDTO;
-import com.example.demo.DTO.Pedido.PedidoDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Entity
@@ -39,6 +37,9 @@ public class Pedido {
     private BigDecimal valorTotal;
     @Column(name = "valor_final", nullable = false , precision = 10 , scale = 2)
     private BigDecimal valorFinal;
+
+    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Pagamento pagamento;
 
     public Pedido(PedidoCreateDTO dto, Cupom cupom, Usuario usuario) {
         this.usuario = usuario;

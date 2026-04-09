@@ -1,6 +1,5 @@
 package com.example.demo.Controller;
 
-import com.example.demo.DTO.Credencial.CredencialCreateDTO;
 import com.example.demo.DTO.Credencial.CredencialDTO;
 import com.example.demo.DTO.Credencial.CredencialUpdateDTO;
 import com.example.demo.Service.CredencialService;

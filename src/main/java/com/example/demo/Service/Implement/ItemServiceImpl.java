@@ -1,6 +1,5 @@
 package com.example.demo.Service.Implement;
 
-import com.example.demo.DTO.Endereco.EnderecoDTO;
 import com.example.demo.DTO.Item.ItemCreateDTO;
 import com.example.demo.DTO.Item.ItemDTO;
 import com.example.demo.DTO.Item.ItemUpdateDTO;
@@ -8,7 +7,7 @@ import com.example.demo.Exception.ResourceNotFoundException;
 import com.example.demo.Model.*;
 import com.example.demo.Repository.ItemRepository;
 import com.example.demo.Repository.PedidoRepository;
-import com.example.demo.Repository.ProdutoRepository;
+import com.example.demo.Repository.VarianteRepository;
 import com.example.demo.Service.ItemService;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +18,12 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
-    private final ProdutoRepository produtoRepository;
+    private final VarianteRepository varianteRepository;
     private final PedidoRepository pedidoRepository;
 
-    public ItemServiceImpl(ItemRepository itemRepository, ProdutoRepository produtoRepository, PedidoRepository pedidoRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, VarianteRepository varianteRepository, PedidoRepository pedidoRepository) {
         this.itemRepository = itemRepository;
-        this.produtoRepository = produtoRepository;
+        this.varianteRepository = varianteRepository;
         this.pedidoRepository = pedidoRepository;
     }
 
@@ -50,13 +49,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO save(ItemCreateDTO dto) {
-        Produto produto = produtoRepository.findById(dto.idProduto())
-                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado"));
+        Variante variante = varianteRepository.findById(dto.idVariante())
+                .orElseThrow(() -> new ResourceNotFoundException("Variante não encontrada"));
 
         Pedido pedido = pedidoRepository.findById(dto.idPedido())
-                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
 
-        Item item = new Item(dto, produto, pedido);
+        Item item = new Item(dto, variante, pedido);
         return new ItemDTO(itemRepository.save(item));
     }
 

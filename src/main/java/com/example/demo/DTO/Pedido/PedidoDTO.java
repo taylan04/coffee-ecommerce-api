@@ -11,7 +11,8 @@ public record PedidoDTO(
         BigDecimal desconto,
         LocalDateTime dataPedido,
         BigDecimal valorTotal,
-        BigDecimal valorFinal
+        BigDecimal valorFinal,
+        String statusPagamento
 ) {
     //esse construtor é o que permite fazer isso: return new PedidoDTO(pedido);
     public PedidoDTO(Pedido pedido) {
@@ -23,7 +24,8 @@ public record PedidoDTO(
                 pedido.getDesconto(),
                 pedido.getDataPedido(),
                 pedido.getValorTotal(),
-                pedido.getValorFinal()
+                pedido.getValorFinal(),
+                pedido.getPagamento() != null ? pedido.getPagamento().getStatus().name() : null
         );
     }
 }

@@ -4,13 +4,11 @@ import com.example.demo.DTO.Item.ItemDTO;
 import com.example.demo.DTO.Pedido.PedidoCreateDTO;
 import com.example.demo.DTO.Pedido.PedidoDTO;
 import com.example.demo.DTO.Pedido.PedidoUpdateDTO;
-import com.example.demo.Model.Pedido;
 import com.example.demo.Service.ItemService;
 import com.example.demo.Service.PedidoService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @RestController

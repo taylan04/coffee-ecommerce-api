@@ -2,7 +2,6 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTO.Endereco.EnderecoDTO;
 import com.example.demo.DTO.Pedido.PedidoDTO;
-import com.example.demo.DTO.Usuario.UsuarioCreateDTO;
 import com.example.demo.DTO.Usuario.UsuarioDTO;
 import com.example.demo.DTO.Usuario.UsuarioUpdateDTO;
 import com.example.demo.Service.EnderecoService;

@@ -40,7 +40,7 @@ public class RabbitConfig {
 
     @Bean
     public Queue pagamentoQueue() {
-        System.out.println("Criação de Fila -> 'mensagem.pagamento'");
+        System.out.println("Criação de Fila -> 'pagamento.fila'");
         return new Queue("pagamento.fila", true);
     }
 

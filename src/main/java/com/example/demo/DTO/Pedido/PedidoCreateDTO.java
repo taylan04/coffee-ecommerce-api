@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 public record PedidoCreateDTO(
         @NotNull(message = "O Id do Usuário não pode ser nulo")
         Long idUsuario,
+        @NotNull(message = "O Id do Endereço não pode ser nulo")
+        Long idEndereco,
         Long idCupom,
         @NotBlank(message = "O estado do pedido precisa ser válido.")
         String estado,

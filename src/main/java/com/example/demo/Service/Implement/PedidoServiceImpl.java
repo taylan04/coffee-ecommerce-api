@@ -5,11 +5,13 @@ import com.example.demo.DTO.Pedido.PedidoCreateDTO;
 import com.example.demo.DTO.Pedido.PedidoDTO;
 import com.example.demo.DTO.Pedido.PedidoUpdateDTO;
 import com.example.demo.Exception.ResourceNotFoundException;
+import com.example.demo.Messaging.Pedido.PedidoProducer;
 import com.example.demo.Model.Cupom;
 import com.example.demo.Model.Endereco;
 import com.example.demo.Model.Pedido;
 import com.example.demo.Model.Usuario;
 import com.example.demo.Repository.CupomRepository;
+import com.example.demo.Repository.EnderecoRepository;
 import com.example.demo.Repository.PedidoRepository;
 import com.example.demo.Repository.UsuarioRepository;
 import com.example.demo.Service.PedidoService;
@@ -20,15 +22,18 @@ import java.util.List;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
-
     private final PedidoRepository pedidoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final EnderecoRepository enderecoRepository;
     private final CupomRepository cupomRepository;
+    private final PedidoProducer pedidoProducer;
 
-    public PedidoServiceImpl(PedidoRepository pedidoRepository, UsuarioRepository usuarioRepository, CupomRepository cupomRepository) {
+    public PedidoServiceImpl(PedidoRepository pedidoRepository, UsuarioRepository usuarioRepository, EnderecoRepository enderecoRepository, CupomRepository cupomRepository, PedidoProducer pedidoProducer) {
         this.pedidoRepository = pedidoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.enderecoRepository = enderecoRepository;
         this.cupomRepository = cupomRepository;
+        this.pedidoProducer = pedidoProducer;
     }
 
     @Override
@@ -56,14 +61,19 @@ public class PedidoServiceImpl implements PedidoService {
         Usuario usuario = usuarioRepository.findById(dto.idUsuario())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
+        Endereco endereco = enderecoRepository.findById(dto.idEndereco())
+                .orElseThrow(() -> new ResourceNotFoundException("Endereco não encontrado"));
+
         Cupom cupom = null;
         if (dto.idCupom() != null) {
             cupom = cupomRepository.findById(dto.idCupom())
                     .orElseThrow(() -> new ResourceNotFoundException("Cupom não encontrado"));
         }
 
-        Pedido pedido = new Pedido(dto, cupom, usuario);
-        return new PedidoDTO(pedidoRepository.save(pedido));
+        Pedido pedido = new Pedido(dto, cupom, usuario, endereco);
+        PedidoDTO pedidoSalvo = new PedidoDTO(pedidoRepository.save(pedido));
+        pedidoProducer.enviarMensagemPedido(pedidoSalvo);
+        return pedidoSalvo;
     }
 
     @Override

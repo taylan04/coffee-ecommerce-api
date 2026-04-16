@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 public record PedidoDTO(
         Long id,
         Long idUsuario,
+        Long idEndereco,
         Long idCupom,
         String estado,
         BigDecimal desconto,
@@ -19,6 +20,7 @@ public record PedidoDTO(
         this(
                 pedido.getIdPedido(),
                 pedido.getUsuario().getIdUsuario(),
+                pedido.getEndereco().getIdEndereco(),
                 pedido.getCupom() != null ? pedido.getCupom().getIdCupom() : null,
                 pedido.getEstado(),
                 pedido.getDesconto(),

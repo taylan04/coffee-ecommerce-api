@@ -12,6 +12,8 @@ import com.example.demo.DTO.Produto.VarianteCreateDTO;
 import com.example.demo.DTO.Usuario.UsuarioCreateDTO;
 import com.example.demo.Model.*;
 import com.example.demo.Repository.*;
+import com.example.demo.Service.ProdutoService;
+import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +29,7 @@ import java.util.List;
 public class DataSeeder {
     @Bean
     @Order(1)
+    @Transactional
     CommandLineRunner seedUsuarios(UsuarioRepository usuarioRepository) {
         return args -> {
             if (usuarioRepository.count() == 0) {
@@ -75,6 +78,7 @@ public class DataSeeder {
 
     @Bean
     @Order(2)
+    @Transactional
     CommandLineRunner seedCredencial(CredencialRepository credencialRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             if (credencialRepository.count() == 0) {
@@ -113,6 +117,7 @@ public class DataSeeder {
 
     @Bean
     @Order(3)
+    @Transactional
     CommandLineRunner seedEndereco(EnderecoRepository enderecoRepository, UsuarioRepository usuarioRepository) {
         return args -> {
             if (enderecoRepository.count() == 0) {
@@ -197,71 +202,78 @@ public class DataSeeder {
 
     @Bean
     @Order(4)
-    CommandLineRunner seedProduto(ProdutoRepository produtoRepository) {
+    @Transactional
+    CommandLineRunner seedProduto(ProdutoService produtoService) {
         return args -> {
-            if (produtoRepository.count() == 0) {
-                ProdutoCreateDTO produtoDTO = new ProdutoCreateDTO(
-                        "Balança dose certa",
-                        "Balança dose certa para café colher cor branca 25gr",
-                        "ACESSORIO",
-                        List.of(new ImagemProdutoCreateDTO("https://graoseprosa.com.br/wp-content/uploads/2026/01/balanca_dose_certa_para_cafe_colher_cor_branca.jpeg", 0)),
-                        List.of(new VarianteCreateDTO(
-                                "BALANCA-25G",
-                                new BigDecimal("28.00"),
-                                3,
-                                List.of(),
-                                List.of()
-                        ))
-                );
-                Produto produto = new Produto();
-                produto.setTitulo(produtoDTO.titulo());
-                produto.setDescricao(produtoDTO.descricao());
-                produto.setCategoria(produtoDTO.categoria());
-                produtoRepository.save(produto);
 
-                produtoDTO = new ProdutoCreateDTO(
-                        "Café Arábica Variedade Catuaí 144",
-                        "Café 100% arábica, da variedade Catuaí 144, produzido na Chapada Diamantina – Bahia, a 1.350 metros de altitude.\n" +
-                                "Cultivado em região de montanha, esse café se destaca pelo sabor equilibrado, aroma agradável e doçura natural.\n" +
-                                "Possui acidez suave, corpo médio e uma bebida macia, fácil de beber, muito aromática e com notas de Mel, Melaço, Licoroso e Floral.\n" +
-                                "Um café especial que agrada tanto quem está começando no mundo dos cafés especiais quanto quem já aprecia qualidade.",
-                        "CAFE",
-                        List.of(new ImagemProdutoCreateDTO("https://graoseprosa.com.br/wp-content/uploads/2025/12/Captura-de-tela-de-2026-01-28-11-41-38.png", 0)),
-                        List.of(
-                                new VarianteCreateDTO(
-                                        "CATUAI144-250G-GRAOS",
-                                        new BigDecimal("48.00"),
-                                        10,
-                                        List.of(
-                                                new AtributoVarianteCreateDTO("gramas", "250"),
-                                                new AtributoVarianteCreateDTO("tipo", "graos")
-                                        ),
-                                        List.of()
-                                ),
-                                new VarianteCreateDTO(
-                                        "CATUAI144-250G-MOIDO",
-                                        new BigDecimal("48.00"),
-                                        10,
-                                        List.of(
-                                                new AtributoVarianteCreateDTO("gramas", "250"),
-                                                new AtributoVarianteCreateDTO("tipo", "moido")
-                                        ),
-                                        List.of()
-                                )
-                        )
-                );
-                produto = new Produto();
-                produto.setTitulo(produtoDTO.titulo());
-                produto.setDescricao(produtoDTO.descricao());
-                produto.setCategoria(produtoDTO.categoria());
-                produtoRepository.save(produto);
+            ProdutoCreateDTO produtoDTO1 = new ProdutoCreateDTO(
+                    "Balança dose certa",
+                    "Balança dose certa para café colher cor branca 25gr",
+                    "ACESSORIO",
+                    List.of(
+                            new ImagemProdutoCreateDTO(
+                                    "https://graoseprosa.com.br/wp-content/uploads/2026/01/balanca_dose_certa_para_cafe_colher_cor_branca.jpeg",
+                                    0
+                            )
+                    ),
+                    List.of(
+                            new VarianteCreateDTO(
+                                    "BALANCA-25G",
+                                    new BigDecimal("28.00"),
+                                    3,
+                                    List.of(),
+                                    List.of()
+                            )
+                    )
+            );
 
-            }
+            produtoService.save(produtoDTO1);
+
+
+            ProdutoCreateDTO produtoDTO2 = new ProdutoCreateDTO(
+                    "Café Arábica Variedade Catuaí 144",
+                    "Café 100% arábica, da variedade Catuaí 144, produzido na Chapada Diamantina – Bahia, a 1.350 metros de altitude.\n" +
+                            "Cultivado em região de montanha, esse café se destaca pelo sabor equilibrado, aroma agradável e doçura natural.\n" +
+                            "Possui acidez suave, corpo médio e uma bebida macia, fácil de beber, muito aromática e com notas de Mel, Melaço, Licoroso e Floral.\n" +
+                            "Um café especial que agrada tanto quem está começando no mundo dos cafés especiais quanto quem já aprecia qualidade.",
+                    "CAFE",
+                    List.of(
+                            new ImagemProdutoCreateDTO(
+                                    "https://graoseprosa.com.br/wp-content/uploads/2025/12/Captura-de-tela-de-2026-01-28-11-41-38.png",
+                                    0
+                            )
+                    ),
+                    List.of(
+                            new VarianteCreateDTO(
+                                    "CATUAI144-250G-GRAOS",
+                                    new BigDecimal("48.00"),
+                                    10,
+                                    List.of(
+                                            new AtributoVarianteCreateDTO("gramas", "250"),
+                                            new AtributoVarianteCreateDTO("tipo", "graos")
+                                    ),
+                                    List.of()
+                            ),
+                            new VarianteCreateDTO(
+                                    "CATUAI144-250G-MOIDO",
+                                    new BigDecimal("48.00"),
+                                    10,
+                                    List.of(
+                                            new AtributoVarianteCreateDTO("gramas", "250"),
+                                            new AtributoVarianteCreateDTO("tipo", "moido")
+                                    ),
+                                    List.of()
+                            )
+                    )
+            );
+
+            produtoService.save(produtoDTO2);
         };
     }
 
     @Bean
     @Order(5)
+    @Transactional
     CommandLineRunner seedCupom(CupomRepository cupomRepository) {
         return args -> {
             if (cupomRepository.count() == 0) {
@@ -389,27 +401,39 @@ public class DataSeeder {
 
     @Bean
     @Order(7)
-    CommandLineRunner seedItem(ItemRepository itemRepository, ProdutoRepository produtoRepository, PedidoRepository pedidoRepository) {
+    CommandLineRunner seedItem(
+            ItemRepository itemRepository,
+            VarianteRepository varianteRepository,
+            PedidoRepository pedidoRepository
+    ) {
         return args -> {
             if (itemRepository.count() == 0) {
+
                 ItemCreateDTO itemDTO = new ItemCreateDTO(1L, 2L, 2, new BigDecimal("28.00"));
-                Produto produto = produtoRepository.findById(1L).orElseThrow();
+
+                Variante variante = varianteRepository.findById(1L).orElseThrow();
                 Pedido pedido = pedidoRepository.findById(itemDTO.idPedido()).orElseThrow();
+
                 Item item = new Item();
-                item.setVariante(produto.getVariantes().get(0));
+                item.setVariante(variante);
                 item.setPedido(pedido);
                 item.setQuantidade(itemDTO.quantidade());
                 item.setSubtotal(itemDTO.subtotal());
+
                 itemRepository.save(item);
 
+
                 itemDTO = new ItemCreateDTO(1L, 1L, 1, new BigDecimal("28.00"));
-                produto = produtoRepository.findById(1L).orElseThrow();
+
+                variante = varianteRepository.findById(1L).orElseThrow();
                 pedido = pedidoRepository.findById(itemDTO.idPedido()).orElseThrow();
+
                 item = new Item();
-                item.setVariante(produto.getVariantes().get(0));
+                item.setVariante(variante);
                 item.setPedido(pedido);
                 item.setQuantidade(itemDTO.quantidade());
                 item.setSubtotal(itemDTO.subtotal());
+
                 itemRepository.save(item);
             }
         };

@@ -13,6 +13,7 @@ import com.example.demo.Model.Produto;
 import com.example.demo.Model.Variante;
 import com.example.demo.Repository.ProdutoRepository;
 import com.example.demo.Service.ProdutoService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
+    @Transactional
     public ProdutoDTO save(ProdutoCreateDTO dto) {
         Produto produto = new Produto();
         produto.setTitulo(dto.titulo());

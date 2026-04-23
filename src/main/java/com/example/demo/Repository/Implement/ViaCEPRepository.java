@@ -7,9 +7,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Repository
 public class ViaCEPRepository implements CEPRepository {
-    private WebClient webClient;
-    public void ViaCEPRepository() {
-        this.webClient = WebClient.create();
+    private final  WebClient webClient;
+    public ViaCEPRepository(WebClient webClient) {
+        this.webClient = webClient;
     }
     private String retornarURLViaCEP(String cep) {
         return "https://viacep.com.br/ws/"+cep+"/json/";

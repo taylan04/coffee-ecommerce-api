@@ -3,6 +3,7 @@ package com.example.demo.Service.Implement;
 import com.example.demo.DTO.Endereco.EnderecoCreateDTO;
 import com.example.demo.DTO.Endereco.EnderecoDTO;
 import com.example.demo.DTO.Endereco.EnderecoUpdateDTO;
+import com.example.demo.Exception.OutsideZoneException;
 import com.example.demo.Exception.ResourceNotFoundException;
 import com.example.demo.Model.CEP;
 import com.example.demo.Model.Endereco;
@@ -54,18 +55,18 @@ public class EnderecoServiceImpl implements EnderecoService {
         Usuario usuario = usuarioRepository.findById(dto.idUsuario())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         CEP cep = cepRepository.retornarCEP(dto.cep());
-        if (cep.getErro()) {
+        if (cep.getErro() != null) {
             throw new ResourceNotFoundException("CEP não encontrado");
         }
-        if (verificarEstadoRioDeJaneiro(cep)) {
-            throw new ResourceNotFoundException("CEP fora da região de entrega");
+        if (!verificarEstadoRioDeJaneiro(cep)) {
+            throw new OutsideZoneException("CEP fora da região de entrega");
         }
         Endereco endereco = new Endereco(dto, usuario);
         return new EnderecoDTO(enderecoRepository.save(endereco));
     }
 
     private Boolean verificarEstadoRioDeJaneiro(CEP cep) {
-        if (cep.getUf() == "RJ") {
+        if (cep.getUf().equals("RJ")) {
             return true;
         }
         return false;

@@ -3,9 +3,12 @@ package com.example.demo.Service.Implement;
 import com.example.demo.DTO.Endereco.EnderecoCreateDTO;
 import com.example.demo.DTO.Endereco.EnderecoDTO;
 import com.example.demo.DTO.Endereco.EnderecoUpdateDTO;
+import com.example.demo.Exception.OutsideZoneException;
 import com.example.demo.Exception.ResourceNotFoundException;
+import com.example.demo.Model.CEP;
 import com.example.demo.Model.Endereco;
 import com.example.demo.Model.Usuario;
+import com.example.demo.Repository.CEPRepository;
 import com.example.demo.Repository.EnderecoRepository;
 import com.example.demo.Repository.UsuarioRepository;
 import com.example.demo.Service.EnderecoService;
@@ -18,11 +21,13 @@ import java.util.List;
 public class EnderecoServiceImpl implements EnderecoService {
 
     private final EnderecoRepository enderecoRepository;
+    private final CEPRepository cepRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public EnderecoServiceImpl(EnderecoRepository enderecoRepository, UsuarioRepository usuarioRepository) {
+    public EnderecoServiceImpl(EnderecoRepository enderecoRepository, UsuarioRepository usuarioRepository, CEPRepository cepRepository) {
         this.enderecoRepository = enderecoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.cepRepository = cepRepository;
     }
 
     @Override
@@ -48,9 +53,23 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Override
     public EnderecoDTO save(EnderecoCreateDTO dto) {
         Usuario usuario = usuarioRepository.findById(dto.idUsuario())
-                .orElseThrow(() -> new ResourceNotFoundException("Endereco não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        CEP cep = cepRepository.retornarCEP(dto.cep());
+        if (cep.getErro() != null) {
+            throw new ResourceNotFoundException("CEP não encontrado");
+        }
+        if (!verificarEstadoRioDeJaneiro(cep)) {
+            throw new OutsideZoneException("CEP fora da região de entrega");
+        }
         Endereco endereco = new Endereco(dto, usuario);
         return new EnderecoDTO(enderecoRepository.save(endereco));
+    }
+
+    private Boolean verificarEstadoRioDeJaneiro(CEP cep) {
+        if (cep.getUf().equals("RJ")) {
+            return true;
+        }
+        return false;
     }
 
     @Override
